@@ -1,8 +1,24 @@
 <template>
   <div>
     <q-card class="fixed-center q-pa-xl text-center form">
+      <h4>Sign up to Firechat!</h4>
       <ValidationObserver v-slot="{ handleSubmit }">
         <q-form @submit.prevent="handleSubmit(submit)">
+          <ValidationProvider
+            name="Name"
+            rules="required|min:3"
+            v-slot="{ errors }"
+          >
+            <q-input
+              name="name"
+              class="block"
+              label="Name"
+              v-model.trim="name"
+              id="name"
+              :error="!!errors.length"
+              :error-message="errors[0]"
+            ></q-input>
+          </ValidationProvider>
           <ValidationProvider
             name="Email"
             rules="required|email"
@@ -39,12 +55,12 @@
             <q-btn
               :loading="loading"
               @click="close"
-              color="secondary mr-md"
+              color="primary mr-md"
               v-close-popup
             >
               Cancel</q-btn
             >
-            <q-btn :loading="loading" type="submit" color="primary"
+            <q-btn :loading="loading" type="submit" color="positive"
               >Sign up</q-btn
             >
           </div>
@@ -62,10 +78,12 @@ import { auth } from 'src/boot/vuefire';
 @Component({
   components: { ValidationProvider, ValidationObserver },
 })
-export default class Signup extends Vue {
+export default class extends Vue {
   open = true;
 
   loading = false;
+
+  name = '';
 
   email = '';
 
@@ -88,8 +106,18 @@ export default class Signup extends Vue {
     this.loading = true;
     auth
       .createUserWithEmailAndPassword(this.email, this.password)
-      .then(() => {
-        this.logged();
+      .then((user) => {
+        user.user
+          ?.updateProfile({
+            displayName: this.name,
+          })
+          .then(() => this.logged())
+          .catch((er) => {
+            this.$q.dialog({
+              title: 'Error',
+              message: er.message,
+            });
+          });
       })
       .catch((er) => {
         this.$q.dialog({

@@ -7,9 +7,10 @@ import {
 import firebase from 'firebase';
 import { Store } from 'vuex';
 
-type UserData = {
+export type UserData = {
   uid: string;
   name: string;
+  image: string | null;
 };
 
 @Module({
@@ -21,7 +22,11 @@ export default class SessionModule extends VuexModule {
 
   @Mutation
   login(user: firebase.User) {
-    this.user = { name: user.displayName ?? '', uid: user.uid };
+    this.user = {
+      name: user.displayName ?? '',
+      uid: user.uid,
+      image: user.photoURL,
+    };
   }
 
   @Mutation

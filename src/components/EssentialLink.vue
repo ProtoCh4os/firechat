@@ -19,7 +19,7 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
-export default class EssentialLink extends Vue {
+export default class extends Vue {
   @Prop({ type: String, required: true }) readonly title!: string;
 
   @Prop({ type: String, default: '' }) readonly caption!: string;

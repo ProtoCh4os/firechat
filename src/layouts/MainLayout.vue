@@ -103,6 +103,7 @@ export default class MainLayout extends Vue {
 
   goToLink(link: string) {
     this.$router.push(link);
+    this.leftDrawerOpen = false;
   }
 }
 </script>

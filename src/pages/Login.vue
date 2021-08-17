@@ -1,7 +1,10 @@
 <template>
   <div class="background">
-    <q-card class="fixed-center q-pa-md text-center">
-      <h3>Welcome to Firechat</h3>
+    <q-card
+      class="fixed-center q-pa-md text-center"
+      style="width: clamp(200px,50%,700px)"
+    >
+      <h3 style="font-family: 'Fira Sans'">Firechat</h3>
       <br />
       <ValidationObserver v-slot="{ handleSubmit }">
         <q-form @submit.prevent="handleSubmit(authManual)">
@@ -39,8 +42,10 @@
           <span v-if="errorMessage">{{ errorMessage }}</span>
           <br />
           <div class="row no-wrap justify-evenly">
-            <q-btn :loading="loading" @click="signup">Sign up</q-btn>
-            <q-btn :loading="loading" type="submit" color="primary"
+            <q-btn :loading="loading" @click="signup" color="primary"
+              >Sign up</q-btn
+            >
+            <q-btn :loading="loading" type="submit" color="positive"
               >Log in</q-btn
             >
           </div>
